@@ -4,13 +4,29 @@ local plugins = {
     "williamboman/mason.nvim",
     opts = {
       ensure_installed = {
+        -- SQL
         "sqlfluff",
+        -- GoLang
         "gopls",
         "gofumpt",
         "goimports-reviser",
-        "golines"
+        "golines",
+        -- Python
+        "pyright",
+        "black",
+        "mypy",
+        "ruff"
       },
     },
+  },
+
+  -- setup LSP for all languages
+  {
+    "neovim/nvim-lspconfig",
+    config = function ()
+      require "plugins.configs.lspconfig"
+      require "custom.configs.lspconfig"
+    end
   },
 
   -- setup SQL
@@ -22,7 +38,7 @@ local plugins = {
     end
   },
 
-  -- setup GO
+  -- setup GoLang
   {
     "jose-elias-alvarez/null-ls.nvim",
     ft = {"go"},
@@ -30,13 +46,16 @@ local plugins = {
       return require "custom.configs.null-ls-go"
     end
   },
+
+  -- setup Python
   {
-    "neovim/nvim-lspconfig",
-    config = function ()
-      require "plugins.configs.lspconfig"
-      require "custom.configs.lspconfig"
+    "jose-elias-alvarez/null-ls.nvim",
+    ft = {"python"},
+    opts = function ()
+      return require "custom.configs.null-ls-python"
     end
-  }
+  },
+
 }
 
 return plugins
